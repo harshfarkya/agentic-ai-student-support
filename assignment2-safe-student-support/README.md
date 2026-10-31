@@ -53,11 +53,3 @@ Sign in as S101 / 1010.
 10. What is the hostel Wi-Fi password?
 
 Log out and sign in as S102 / 2020 if you want to show the other student's own fee working.
-
-## Video checklist
-
-- Point at `tools.py` and show the actor/target check.
-- Show a blocked question and the audit row `blocked` / `not_executed`.
-- Show a pending programme change, then reject (record unchanged), then approve (record updated).
-- Show an OTP that is not in saved memory.
-- Open `evaluation.md` and compare accuracy, latency, and tokens with Assignment 1.
