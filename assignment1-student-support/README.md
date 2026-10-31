@@ -62,11 +62,3 @@ Use student id `S101` unless noted.
 9. Change the student id to `Z999` and ask the fee question again.
 
 Sample ids: `S101` Rahul Sharma, `S102` Priya Nair.
-
-## Video checklist
-
-- Show the plan step in the trace (tool vs handbook vs memory).
-- Show that the portal answer uses the payment-portal section only.
-- Show memory surviving **New session**, and the OTP not being stored.
-- Show the missing-student error and the hostel question with no handbook match.
-- Open `evaluation.md` for accuracy, latency, and token estimates.
