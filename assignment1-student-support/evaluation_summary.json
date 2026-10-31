@@ -1,0 +1,9 @@
+{
+  "assignment": 1,
+  "passed": 8,
+  "total": 8,
+  "accuracy_pct": 100.0,
+  "avg_latency_ms": 6.3,
+  "avg_input_tokens": 43.2,
+  "avg_output_tokens": 28.0
+}

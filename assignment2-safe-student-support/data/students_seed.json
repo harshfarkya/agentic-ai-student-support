@@ -1,0 +1,22 @@
+[
+  {
+    "student_id": "S101",
+    "name": "Rahul Sharma",
+    "pin": "1010",
+    "programme": "PGDM Big Data Analytics",
+    "fee_status": "Partially paid",
+    "fee_due": 45000,
+    "term": "Semester 3",
+    "scholarship": "Merit scholarship 20 percent approved"
+  },
+  {
+    "student_id": "S102",
+    "name": "Priya Nair",
+    "pin": "2020",
+    "programme": "PGDM Artificial Intelligence and Data Science",
+    "fee_status": "Pending",
+    "fee_due": 125000,
+    "term": "Semester 1",
+    "scholarship": "No active scholarship"
+  }
+]

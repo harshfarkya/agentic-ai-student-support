@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Student Support Agent</title>
+  <style>
+    body { font-family: "Segoe UI", sans-serif; margin: 0; background: #f3f6f9; color: #172033; }
+    header { background: #123a63; color: #fff; padding: 16px 20px; }
+    h1 { margin: 0; font-size: 22px; }
+    header p { margin: 6px 0 0; }
+    main { display: grid; grid-template-columns: 1.3fr 0.9fr; gap: 14px; padding: 14px; align-items: start; }
+    .panel { background: #fff; border: 1px solid #d7e0ea; border-radius: 10px; padding: 14px; }
+    label { display: block; font-size: 13px; margin: 8px 0; }
+    input, select, button { font: inherit; }
+    input[type="text"], select { width: 100%; padding: 8px; box-sizing: border-box; }
+    #chat { height: 380px; overflow: auto; background: #f8fafc; border: 1px solid #d7e0ea; border-radius: 8px; padding: 10px; }
+    .msg { padding: 8px 10px; border-radius: 8px; margin-bottom: 8px; white-space: pre-wrap; }
+    .you { background: #e5f0fb; }
+    .agent { background: #eef6ef; }
+    .row { display: flex; gap: 8px; margin-top: 8px; }
+    .row input { flex: 1; padding: 8px; }
+    button { background: #123a63; color: white; border: 0; border-radius: 6px; padding: 8px 12px; cursor: pointer; }
+    button.secondary { background: #4d6074; }
+    .actions { display: flex; gap: 8px; margin-top: 8px; }
+    pre { background: #0f1722; color: #e6edf5; padding: 10px; border-radius: 8px; overflow: auto; max-height: 320px; font-size: 12px; }
+    .hint { color: #526070; font-size: 13px; }
+    h2 { font-size: 16px; margin: 12px 0 8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Student Support Agent</h1>
+    <p>Assignment 1. The agent plans, calls a tool or one handbook section, and answers from that context only.</p>
+  </header>
+  <main>
+    <section class="panel">
+      <label>Student id
+        <input id="studentId" type="text" value="S101">
+      </label>
+      <p class="hint">Demo ids: S101 Rahul Sharma, S102 Priya Nair. Type Z999 to show a missing record.</p>
+      <label>Sample question
+        <select id="samples">
+          <option value="">Choose a demo question</option>
+          <option>What is my current fee status?</option>
+          <option>What is my scholarship status?</option>
+          <option>The payment portal failed. Can I pay on the next working day?</option>
+          <option>Please remember that I prefer email updates.</option>
+          <option>How should you contact me?</option>
+          <option>My OTP is 482913</option>
+          <option>What is the hostel Wi-Fi password?</option>
+          <option>Please create a support request because the payment portal failed.</option>
+        </select>
+      </label>
+      <div id="chat"></div>
+      <form id="form" class="row">
+        <input id="question" type="text" placeholder="Ask about fees, scholarship, or policy">
+        <button type="submit">Send</button>
+      </form>
+      <div class="actions">
+        <button type="button" id="newSession" class="secondary">New session</button>
+        <button type="button" id="reset" class="secondary">Reset demo data</button>
+      </div>
+    </section>
+    <aside class="panel">
+      <h2>Saved memory</h2>
+      <p class="hint">Preferences stay after New session. Secrets are not written here.</p>
+      <pre id="memory">{}</pre>
+      <h2>Trace</h2>
+      <p class="hint">Token counts estimate the context packet. No model API is called.</p>
+      <pre id="trace">Send a question to see the trace.</pre>
+    </aside>
+  </main>
+  <script>
+    const chat = document.getElementById("chat");
+    const studentId = document.getElementById("studentId");
+
+    function add(role, text) {
+      const div = document.createElement("div");
+      div.className = "msg " + role;
+      div.textContent = (role === "you" ? "Student: " : "Agent: ") + text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function loadMemory() {
+      const res = await fetch("/api/memory?student_id=" + encodeURIComponent(studentId.value.trim()));
+      const data = await res.json();
+      document.getElementById("memory").textContent = JSON.stringify(data, null, 2);
+    }
+
+    document.getElementById("samples").addEventListener("change", (event) => {
+      if (event.target.value) {
+        document.getElementById("question").value = event.target.value;
+      }
+    });
+
+    document.getElementById("form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const question = document.getElementById("question").value.trim();
+      if (!question) return;
+      add("you", question);
+      document.getElementById("question").value = "";
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question, student_id: studentId.value.trim() })
+      });
+      const data = await res.json();
+      add("agent", data.answer || "No answer");
+      const trace = data.trace || {};
+      const head = [
+        "Tool: " + (trace.tool || "none"),
+        "Chunks: " + ((trace.chunks || []).join(", ") || "none"),
+        "Memory write: " + (trace.memory_write || "none"),
+        "Latency ms: " + trace.latency_ms,
+        "Tokens in/out: " + trace.input_tokens + " / " + trace.output_tokens,
+        ""
+      ].join("\n");
+      document.getElementById("trace").textContent = head + JSON.stringify(trace, null, 2);
+      loadMemory();
+    });
+
+    document.getElementById("newSession").addEventListener("click", () => {
+      chat.textContent = "";
+      add("agent", "New session started. Saved contact preferences are still on file. Chat history was cleared.");
+    });
+
+    document.getElementById("reset").addEventListener("click", async () => {
+      await fetch("/api/reset", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+      chat.textContent = "";
+      document.getElementById("trace").textContent = "Demo data reset.";
+      loadMemory();
+      add("agent", "Memory, traces, and support requests were cleared.");
+    });
+
+    studentId.addEventListener("change", loadMemory);
+    loadMemory();
+  </script>
+</body>
+</html>

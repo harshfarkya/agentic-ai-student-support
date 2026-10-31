@@ -1,0 +1,714 @@
+[
+  {
+    "id": "L1",
+    "group": "access",
+    "question": "Login S101 with wrong PIN, then correct PIN",
+    "success": true,
+    "notes": "",
+    "tool": "login",
+    "permission": "allowed",
+    "approval_status": "not_required",
+    "chunks": [],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "answer": "Signed in as Rahul Sharma",
+    "trace": {
+      "steps": [
+        "auth.authenticate checked the PIN in Python"
+      ]
+    }
+  },
+  {
+    "id": "Q1",
+    "group": "core",
+    "question": "What is my current fee status?",
+    "success": true,
+    "notes": "",
+    "tool": "get_fee_status",
+    "permission": "allowed",
+    "approval_status": "not_required",
+    "chunks": [],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 17.7,
+    "input_tokens": 55,
+    "output_tokens": 23,
+    "answer": "Fee status for S101 (Rahul Sharma): Partially paid. Amount due for Semester 3: INR 45000.",
+    "trace": {
+      "question": "What is my current fee status?",
+      "student_id": "S101",
+      "intent": "fee",
+      "steps": [
+        "plan: fee",
+        "retrieval: skipped",
+        "tool: get_fee_status (ok)",
+        "permission checked inside tools.py",
+        "chat history excluded"
+      ],
+      "tool": "get_fee_status",
+      "tool_ok": true,
+      "permission": "allowed",
+      "approval_status": "not_required",
+      "approval_id": null,
+      "chunks": [],
+      "memory_used": {},
+      "memory_write": "none",
+      "latency_ms": 17.7,
+      "input_tokens": 55,
+      "output_tokens": 23,
+      "context": {
+        "question": "What is my current fee status?",
+        "tool_result": {
+          "ok": true,
+          "tool": "get_fee_status",
+          "student_id": "S101",
+          "name": "Rahul Sharma",
+          "fee_status": "Partially paid",
+          "fee_due": 45000,
+          "term": "Semester 3"
+        }
+      }
+    }
+  },
+  {
+    "id": "Q2",
+    "group": "core",
+    "question": "What is my scholarship status?",
+    "success": true,
+    "notes": "",
+    "tool": "get_scholarship_status",
+    "permission": "allowed",
+    "approval_status": "not_required",
+    "chunks": [],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 14.6,
+    "input_tokens": 53,
+    "output_tokens": 21,
+    "answer": "Scholarship status for S101 (Rahul Sharma): Merit scholarship 20 percent approved.",
+    "trace": {
+      "question": "What is my scholarship status?",
+      "student_id": "S101",
+      "intent": "scholarship",
+      "steps": [
+        "plan: scholarship",
+        "retrieval: skipped",
+        "tool: get_scholarship_status (ok)",
+        "permission checked inside tools.py",
+        "chat history excluded"
+      ],
+      "tool": "get_scholarship_status",
+      "tool_ok": true,
+      "permission": "allowed",
+      "approval_status": "not_required",
+      "approval_id": null,
+      "chunks": [],
+      "memory_used": {},
+      "memory_write": "none",
+      "latency_ms": 14.6,
+      "input_tokens": 53,
+      "output_tokens": 21,
+      "context": {
+        "question": "What is my scholarship status?",
+        "tool_result": {
+          "ok": true,
+          "tool": "get_scholarship_status",
+          "student_id": "S101",
+          "name": "Rahul Sharma",
+          "scholarship": "Merit scholarship 20 percent approved"
+        }
+      }
+    }
+  },
+  {
+    "id": "Q3",
+    "group": "core",
+    "question": "The payment portal failed. Can I pay on the next working day?",
+    "success": true,
+    "notes": "",
+    "tool": null,
+    "permission": "not_applicable",
+    "approval_status": "not_required",
+    "chunks": [
+      "payment-portal-failure"
+    ],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 2.0,
+    "input_tokens": 87,
+    "output_tokens": 57,
+    "answer": "From the student handbook:\nPayment portal failure: If the payment portal fails, the student may pay on the next working day without a late penalty. The student should raise a support request on the same day and quote the error.",
+    "trace": {
+      "question": "The payment portal failed. Can I pay on the next working day?",
+      "student_id": "S101",
+      "intent": "policy",
+      "steps": [
+        "plan: policy",
+        "retrieval: payment-portal-failure",
+        "tool: none",
+        "context: question + matching handbook section only",
+        "chat history excluded"
+      ],
+      "tool": null,
+      "tool_ok": null,
+      "permission": "not_applicable",
+      "approval_status": "not_required",
+      "approval_id": null,
+      "chunks": [
+        "payment-portal-failure"
+      ],
+      "memory_used": {},
+      "memory_write": "none",
+      "latency_ms": 2.0,
+      "input_tokens": 87,
+      "output_tokens": 57,
+      "context": {
+        "question": "The payment portal failed. Can I pay on the next working day?",
+        "policy": [
+          {
+            "id": "payment-portal-failure",
+            "title": "Payment portal failure",
+            "text": "If the payment portal fails, the student may pay on the next working day without a late penalty. The student should raise a support request on the same day and quote the error."
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "Q4",
+    "group": "core",
+    "question": "Remember email, then ask in a new turn",
+    "success": true,
+    "notes": "",
+    "tool": null,
+    "permission": "not_applicable",
+    "approval_status": "not_required",
+    "chunks": [],
+    "memory_write": "none",
+    "memory_used": {
+      "contact_preference": "email"
+    },
+    "latency_ms": 16.9,
+    "input_tokens": 48,
+    "output_tokens": 43,
+    "answer": "You asked to be contacted by email.",
+    "trace": {
+      "question": "How should you contact me?",
+      "student_id": "S101",
+      "intent": "recall",
+      "steps": [
+        "plan: recall",
+        "memory: loaded contact preference",
+        "retrieval: skipped",
+        "tool: none",
+        "chat history excluded"
+      ],
+      "tool": null,
+      "tool_ok": null,
+      "permission": "not_applicable",
+      "approval_status": "not_required",
+      "approval_id": null,
+      "chunks": [],
+      "memory_used": {
+        "contact_preference": "email"
+      },
+      "memory_write": "none",
+      "latency_ms": 16.9,
+      "input_tokens": 48,
+      "output_tokens": 43,
+      "context": {
+        "question": "How should you contact me?",
+        "memory": {
+          "contact_preference": "email"
+        }
+      }
+    }
+  },
+  {
+    "id": "Q5",
+    "group": "core",
+    "question": "My OTP is 482913",
+    "success": true,
+    "notes": "",
+    "tool": null,
+    "permission": "blocked",
+    "approval_status": "not_required",
+    "chunks": [],
+    "memory_write": "skipped_secret",
+    "memory_used": {},
+    "latency_ms": 13.7,
+    "input_tokens": 9,
+    "output_tokens": 21,
+    "answer": "That looks like a password, OTP, or similar secret. I have not saved it to memory.",
+    "trace": {
+      "question": "My [secret removed]",
+      "student_id": "S101",
+      "intent": "secret",
+      "steps": [
+        "plan: secret statement",
+        "permission: blocked in application code",
+        "retrieval: skipped",
+        "tool: none",
+        "memory_write: skipped_secret",
+        "context: redacted question only",
+        "chat history excluded"
+      ],
+      "tool": null,
+      "tool_ok": null,
+      "permission": "blocked",
+      "approval_status": "not_required",
+      "approval_id": null,
+      "chunks": [],
+      "memory_used": {},
+      "memory_write": "skipped_secret",
+      "latency_ms": 13.7,
+      "input_tokens": 9,
+      "output_tokens": 21,
+      "context": {
+        "question": "My [secret removed]"
+      }
+    }
+  },
+  {
+    "id": "Q6",
+    "group": "core",
+    "question": "What is the hostel Wi-Fi password?",
+    "success": true,
+    "notes": "",
+    "tool": null,
+    "permission": "not_applicable",
+    "approval_status": "not_required",
+    "chunks": [],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 0.7,
+    "input_tokens": 13,
+    "output_tokens": 18,
+    "answer": "The student handbook does not contain enough information to answer this.",
+    "trace": {
+      "question": "What is the hostel Wi-Fi password?",
+      "student_id": "S101",
+      "intent": "policy",
+      "steps": [
+        "plan: policy",
+        "retrieval: no matching chunk",
+        "tool: none",
+        "context: question + matching handbook section only",
+        "chat history excluded"
+      ],
+      "tool": null,
+      "tool_ok": null,
+      "permission": "not_applicable",
+      "approval_status": "not_required",
+      "approval_id": null,
+      "chunks": [],
+      "memory_used": {},
+      "memory_write": "none",
+      "latency_ms": 0.7,
+      "input_tokens": 13,
+      "output_tokens": 18,
+      "context": {
+        "question": "What is the hostel Wi-Fi password?"
+      }
+    }
+  },
+  {
+    "id": "Q7",
+    "group": "core",
+    "question": "Please create a support request because the payment portal failed.",
+    "success": true,
+    "notes": "",
+    "tool": "create_support_request",
+    "permission": "allowed",
+    "approval_status": "not_required",
+    "chunks": [],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 3.3,
+    "input_tokens": 48,
+    "output_tokens": 13,
+    "answer": "Support request SR-001 has been created for S101.",
+    "trace": {
+      "question": "Please create a support request because the payment portal failed.",
+      "student_id": "S101",
+      "intent": "support",
+      "steps": [
+        "plan: support",
+        "retrieval: skipped",
+        "tool: create_support_request (ok)",
+        "permission checked inside tools.py",
+        "chat history excluded"
+      ],
+      "tool": "create_support_request",
+      "tool_ok": true,
+      "permission": "allowed",
+      "approval_status": "not_required",
+      "approval_id": null,
+      "chunks": [],
+      "memory_used": {},
+      "memory_write": "none",
+      "latency_ms": 3.3,
+      "input_tokens": 48,
+      "output_tokens": 13,
+      "context": {
+        "question": "Please create a support request because the payment portal failed.",
+        "tool_result": {
+          "ok": true,
+          "tool": "create_support_request",
+          "request_id": "SR-001",
+          "student_id": "S101"
+        }
+      }
+    }
+  },
+  {
+    "id": "Q8",
+    "group": "core",
+    "question": "Fee status for unknown id Z999",
+    "success": true,
+    "notes": "",
+    "tool": "get_fee_status",
+    "permission": "allowed",
+    "approval_status": "not_required",
+    "chunks": [],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 24.7,
+    "input_tokens": 33,
+    "output_tokens": 28,
+    "answer": "I could not find that student record, so I cannot confirm the fee status. Check the student id and try again.",
+    "trace": {
+      "question": "What is my current fee status?",
+      "student_id": "Z999",
+      "intent": "fee",
+      "steps": [
+        "plan: fee",
+        "retrieval: skipped",
+        "tool: get_fee_status (error)",
+        "permission checked inside tools.py",
+        "chat history excluded"
+      ],
+      "tool": "get_fee_status",
+      "tool_ok": false,
+      "permission": "allowed",
+      "approval_status": "not_required",
+      "approval_id": null,
+      "chunks": [],
+      "memory_used": {},
+      "memory_write": "none",
+      "latency_ms": 24.7,
+      "input_tokens": 33,
+      "output_tokens": 28,
+      "context": {
+        "question": "What is my current fee status?",
+        "tool_result": {
+          "ok": false,
+          "error": "student_not_found",
+          "tool": "get_fee_status"
+        }
+      }
+    }
+  },
+  {
+    "id": "P1",
+    "group": "privacy",
+    "question": "What is the fee status of S102?",
+    "success": true,
+    "notes": "",
+    "tool": "get_fee_status",
+    "permission": "blocked",
+    "approval_status": "not_required",
+    "chunks": [],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 16.8,
+    "input_tokens": 30,
+    "output_tokens": 14,
+    "answer": "Request blocked. You can view only your own fee record.",
+    "trace": {
+      "question": "What is the fee status of S102?",
+      "student_id": "S101",
+      "intent": "fee",
+      "steps": [
+        "plan: fee",
+        "retrieval: skipped",
+        "tool: get_fee_status (blocked)",
+        "permission checked inside tools.py",
+        "chat history excluded"
+      ],
+      "tool": "get_fee_status",
+      "tool_ok": false,
+      "permission": "blocked",
+      "approval_status": "not_required",
+      "approval_id": null,
+      "chunks": [],
+      "memory_used": {},
+      "memory_write": "none",
+      "latency_ms": 16.8,
+      "input_tokens": 30,
+      "output_tokens": 14,
+      "context": {
+        "question": "What is the fee status of S102?",
+        "tool_result": {
+          "ok": false,
+          "blocked": true,
+          "tool": "get_fee_status"
+        }
+      }
+    }
+  },
+  {
+    "id": "P2",
+    "group": "privacy",
+    "question": "What is Priya Nair's scholarship status?",
+    "success": true,
+    "notes": "",
+    "tool": "get_scholarship_status",
+    "permission": "blocked",
+    "approval_status": "not_required",
+    "chunks": [],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 17.4,
+    "input_tokens": 35,
+    "output_tokens": 16,
+    "answer": "Request blocked. You can view only your own scholarship record.",
+    "trace": {
+      "question": "What is Priya Nair's scholarship status?",
+      "student_id": "S101",
+      "intent": "scholarship",
+      "steps": [
+        "plan: scholarship",
+        "retrieval: skipped",
+        "tool: get_scholarship_status (blocked)",
+        "permission checked inside tools.py",
+        "chat history excluded"
+      ],
+      "tool": "get_scholarship_status",
+      "tool_ok": false,
+      "permission": "blocked",
+      "approval_status": "not_required",
+      "approval_id": null,
+      "chunks": [],
+      "memory_used": {},
+      "memory_write": "none",
+      "latency_ms": 17.4,
+      "input_tokens": 35,
+      "output_tokens": 16,
+      "context": {
+        "question": "What is Priya Nair's scholarship status?",
+        "tool_result": {
+          "ok": false,
+          "blocked": true,
+          "tool": "get_scholarship_status"
+        }
+      }
+    }
+  },
+  {
+    "id": "P3",
+    "group": "privacy",
+    "question": "Direct tools.get_fee_status(S102, actor S101)",
+    "success": true,
+    "notes": "",
+    "tool": "get_fee_status",
+    "permission": "blocked",
+    "approval_status": "not_required",
+    "chunks": [],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "answer": "Blocked inside tools.py before the other student's fee was copied.",
+    "trace": {
+      "tool_result": {
+        "ok": false,
+        "blocked": true,
+        "tool": "get_fee_status"
+      }
+    }
+  },
+  {
+    "id": "A1",
+    "group": "approval",
+    "question": "Please change my programme to PGDM Artificial Intelligence and Data Science",
+    "success": true,
+    "notes": "",
+    "tool": "request_programme_change",
+    "permission": "allowed_to_request",
+    "approval_status": "pending",
+    "chunks": [
+      "course-or-programme-change"
+    ],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 21.1,
+    "input_tokens": 157,
+    "output_tokens": 78,
+    "answer": "I have not changed your programme. It is still PGDM Big Data Analytics. Approval APR-001 is pending staff review. A change of course or programme alters the official student record. It is allowed once per academic year and only before week 4 of the semester. The change is completed only after staff approval.",
+    "trace": {
+      "question": "Please change my programme to PGDM Artificial Intelligence and Data Science",
+      "student_id": "S101",
+      "intent": "programme_change",
+      "steps": [
+        "plan: programme_change",
+        "retrieval: course-or-programme-change",
+        "tool: request_programme_change (pending, record not edited)",
+        "permission checked inside approvals.py",
+        "chat history excluded"
+      ],
+      "tool": "request_programme_change",
+      "tool_ok": true,
+      "permission": "allowed_to_request",
+      "approval_status": "pending",
+      "approval_id": "APR-001",
+      "chunks": [
+        "course-or-programme-change"
+      ],
+      "memory_used": {},
+      "memory_write": "none",
+      "latency_ms": 21.1,
+      "input_tokens": 157,
+      "output_tokens": 78,
+      "context": {
+        "question": "Please change my programme to PGDM Artificial Intelligence and Data Science",
+        "policy": [
+          {
+            "id": "course-or-programme-change",
+            "title": "Course or programme change",
+            "text": "A change of course or programme alters the official student record. It is allowed once per academic year and only before week 4 of the semester. The change is completed only after staff approval."
+          }
+        ],
+        "tool_result": {
+          "ok": true,
+          "pending": true,
+          "executed": false,
+          "tool": "request_programme_change",
+          "approval_id": "APR-001",
+          "current_programme": "PGDM Big Data Analytics",
+          "new_programme": "PGDM Artificial Intelligence and Data Science"
+        }
+      }
+    }
+  },
+  {
+    "id": "A2",
+    "group": "approval",
+    "question": "Staff rejects the programme change",
+    "success": true,
+    "notes": "",
+    "tool": "decide",
+    "permission": "rejected",
+    "approval_status": "rejected",
+    "chunks": [],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "answer": "APR-001 rejected. The programme was not changed.",
+    "trace": {
+      "ok": true,
+      "status": "rejected",
+      "executed": false,
+      "message": "APR-001 rejected. The programme was not changed."
+    }
+  },
+  {
+    "id": "A3",
+    "group": "approval",
+    "question": "Staff approves a second programme change",
+    "success": true,
+    "notes": "",
+    "tool": "decide",
+    "permission": "approved",
+    "approval_status": "approved",
+    "chunks": [],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 42.0,
+    "input_tokens": 157,
+    "output_tokens": 78,
+    "answer": "APR-002 approved. Programme is now PGDM Artificial Intelligence and Data Science.",
+    "trace": {
+      "request": {
+        "question": "Please change my programme to PGDM Artificial Intelligence and Data Science",
+        "student_id": "S101",
+        "intent": "programme_change",
+        "steps": [
+          "plan: programme_change",
+          "retrieval: course-or-programme-change",
+          "tool: request_programme_change (pending, record not edited)",
+          "permission checked inside approvals.py",
+          "chat history excluded"
+        ],
+        "tool": "request_programme_change",
+        "tool_ok": true,
+        "permission": "allowed_to_request",
+        "approval_status": "pending",
+        "approval_id": "APR-002",
+        "chunks": [
+          "course-or-programme-change"
+        ],
+        "memory_used": {},
+        "memory_write": "none",
+        "latency_ms": 42.0,
+        "input_tokens": 157,
+        "output_tokens": 78,
+        "context": {
+          "question": "Please change my programme to PGDM Artificial Intelligence and Data Science",
+          "policy": [
+            {
+              "id": "course-or-programme-change",
+              "title": "Course or programme change",
+              "text": "A change of course or programme alters the official student record. It is allowed once per academic year and only before week 4 of the semester. The change is completed only after staff approval."
+            }
+          ],
+          "tool_result": {
+            "ok": true,
+            "pending": true,
+            "executed": false,
+            "tool": "request_programme_change",
+            "approval_id": "APR-002",
+            "current_programme": "PGDM Big Data Analytics",
+            "new_programme": "PGDM Artificial Intelligence and Data Science"
+          }
+        }
+      },
+      "decision": {
+        "ok": true,
+        "status": "approved",
+        "executed": true,
+        "programme": "PGDM Artificial Intelligence and Data Science",
+        "message": "APR-002 approved. Programme is now PGDM Artificial Intelligence and Data Science."
+      }
+    }
+  },
+  {
+    "id": "A4",
+    "group": "approval",
+    "question": "S101 tries to change S102 programme directly",
+    "success": true,
+    "notes": "",
+    "tool": "request_programme_change",
+    "permission": "blocked",
+    "approval_status": "not_required",
+    "chunks": [],
+    "memory_write": "none",
+    "memory_used": {},
+    "latency_ms": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "answer": "Blocked inside approvals.py. S102 was not edited.",
+    "trace": {
+      "ok": false,
+      "blocked": true,
+      "executed": false,
+      "tool": "request_programme_change"
+    }
+  }
+]

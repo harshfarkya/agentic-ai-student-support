@@ -1,0 +1,124 @@
+[
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "login",
+    "target": "S101",
+    "decision": "denied",
+    "result": "bad_credentials"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "login",
+    "target": "S101",
+    "decision": "allowed",
+    "result": "signed_in"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "get_fee_status",
+    "target": "S101",
+    "decision": "allowed",
+    "result": "returned_own_fee_status"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "get_scholarship_status",
+    "target": "S101",
+    "decision": "allowed",
+    "result": "returned_own_scholarship_status"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "memory_write",
+    "target": "S101",
+    "decision": "blocked",
+    "result": "secret_not_stored"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "create_support_request",
+    "target": "S101",
+    "decision": "allowed",
+    "result": "created SR-001"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "Z999",
+    "action": "get_fee_status",
+    "target": "Z999",
+    "decision": "allowed",
+    "result": "student_not_found"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "get_fee_status",
+    "target": "S102",
+    "decision": "blocked",
+    "result": "not_executed"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "get_scholarship_status",
+    "target": "S102",
+    "decision": "blocked",
+    "result": "not_executed"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "get_fee_status",
+    "target": "S102",
+    "decision": "blocked",
+    "result": "not_executed"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "programme_change",
+    "target": "S101",
+    "decision": "pending",
+    "result": "waiting_for_staff APR-001"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "programme_change",
+    "target": "S101",
+    "decision": "rejected",
+    "result": "not_executed",
+    "approver": "staff.admin"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "programme_change",
+    "target": "S101",
+    "decision": "pending",
+    "result": "waiting_for_staff APR-002"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "programme_change",
+    "target": "S101",
+    "decision": "approved",
+    "result": "programme_updated",
+    "approver": "staff.admin"
+  },
+  {
+    "time": "2026-10-31T17:43:51",
+    "actor": "S101",
+    "action": "programme_change",
+    "target": "S102",
+    "decision": "blocked",
+    "result": "not_executed"
+  }
+]

@@ -1,0 +1,228 @@
+[
+  {
+    "question": "What is my current fee status?",
+    "student_id": "S101",
+    "intent": "fee",
+    "steps": [
+      "plan: fee",
+      "retrieval: skipped",
+      "tool: get_fee_status (ok)",
+      "context: question + fee tool result",
+      "chat history excluded"
+    ],
+    "tool": "get_fee_status",
+    "tool_ok": true,
+    "chunks": [],
+    "memory_used": {},
+    "memory_write": "none",
+    "latency_ms": 13.7,
+    "input_tokens": 55,
+    "output_tokens": 23,
+    "context": {
+      "question": "What is my current fee status?",
+      "tool_result": {
+        "ok": true,
+        "tool": "get_fee_status",
+        "student_id": "S101",
+        "name": "Rahul Sharma",
+        "fee_status": "Partially paid",
+        "fee_due": 45000,
+        "term": "Semester 3"
+      }
+    }
+  },
+  {
+    "question": "What is my scholarship status?",
+    "student_id": "S101",
+    "intent": "scholarship",
+    "steps": [
+      "plan: scholarship",
+      "retrieval: skipped",
+      "tool: get_scholarship_status (ok)",
+      "context: question + scholarship tool result",
+      "chat history excluded"
+    ],
+    "tool": "get_scholarship_status",
+    "tool_ok": true,
+    "chunks": [],
+    "memory_used": {},
+    "memory_write": "none",
+    "latency_ms": 0.4,
+    "input_tokens": 53,
+    "output_tokens": 21,
+    "context": {
+      "question": "What is my scholarship status?",
+      "tool_result": {
+        "ok": true,
+        "tool": "get_scholarship_status",
+        "student_id": "S101",
+        "name": "Rahul Sharma",
+        "scholarship": "Merit scholarship 20 percent approved"
+      }
+    }
+  },
+  {
+    "question": "The payment portal failed. Can I pay on the next working day?",
+    "student_id": "S101",
+    "intent": "policy",
+    "steps": [
+      "plan: policy",
+      "retrieval: payment-portal-failure",
+      "tool: none",
+      "context: question + matching handbook section only",
+      "chat history excluded"
+    ],
+    "tool": null,
+    "tool_ok": null,
+    "chunks": [
+      "payment-portal-failure"
+    ],
+    "memory_used": {},
+    "memory_write": "none",
+    "latency_ms": 21.4,
+    "input_tokens": 87,
+    "output_tokens": 57,
+    "context": {
+      "question": "The payment portal failed. Can I pay on the next working day?",
+      "policy": [
+        {
+          "id": "payment-portal-failure",
+          "title": "Payment portal failure",
+          "text": "If the payment portal fails, the student may pay on the next working day without a late penalty. The student should raise a support request on the same day and quote the error."
+        }
+      ]
+    }
+  },
+  {
+    "question": "How should you contact me?",
+    "student_id": "S101",
+    "intent": "recall",
+    "steps": [
+      "plan: recall",
+      "memory: loaded contact preference",
+      "retrieval: skipped",
+      "tool: none",
+      "chat history excluded"
+    ],
+    "tool": null,
+    "tool_ok": null,
+    "chunks": [],
+    "memory_used": {
+      "contact_preference": "email"
+    },
+    "memory_write": "none",
+    "latency_ms": 13.4,
+    "input_tokens": 48,
+    "output_tokens": 43,
+    "context": {
+      "question": "How should you contact me?",
+      "memory": {
+        "contact_preference": "email"
+      }
+    }
+  },
+  {
+    "question": "My [secret removed]",
+    "student_id": "S101",
+    "intent": "secret",
+    "steps": [
+      "plan: secret statement",
+      "retrieval: skipped",
+      "tool: none",
+      "memory_write: skipped_secret",
+      "context: redacted question only",
+      "chat history excluded"
+    ],
+    "tool": null,
+    "tool_ok": null,
+    "chunks": [],
+    "memory_used": {},
+    "memory_write": "skipped_secret",
+    "latency_ms": 0.0,
+    "input_tokens": 9,
+    "output_tokens": 21,
+    "context": {
+      "question": "My [secret removed]"
+    }
+  },
+  {
+    "question": "What is the hostel Wi-Fi password?",
+    "student_id": "S101",
+    "intent": "policy",
+    "steps": [
+      "plan: policy",
+      "retrieval: no matching chunk",
+      "tool: none",
+      "context: question + matching handbook section only",
+      "chat history excluded"
+    ],
+    "tool": null,
+    "tool_ok": null,
+    "chunks": [],
+    "memory_used": {},
+    "memory_write": "none",
+    "latency_ms": 0.3,
+    "input_tokens": 13,
+    "output_tokens": 18,
+    "context": {
+      "question": "What is the hostel Wi-Fi password?"
+    }
+  },
+  {
+    "question": "Please create a support request because the payment portal failed.",
+    "student_id": "S101",
+    "intent": "support",
+    "steps": [
+      "plan: support",
+      "retrieval: skipped",
+      "tool: create_support_request (ok)",
+      "context: question + support tool result",
+      "chat history excluded"
+    ],
+    "tool": "create_support_request",
+    "tool_ok": true,
+    "chunks": [],
+    "memory_used": {},
+    "memory_write": "none",
+    "latency_ms": 0.7,
+    "input_tokens": 48,
+    "output_tokens": 13,
+    "context": {
+      "question": "Please create a support request because the payment portal failed.",
+      "tool_result": {
+        "ok": true,
+        "tool": "create_support_request",
+        "request_id": "SR-001",
+        "student_id": "S101"
+      }
+    }
+  },
+  {
+    "question": "What is my current fee status?",
+    "student_id": "Z999",
+    "intent": "fee",
+    "steps": [
+      "plan: fee",
+      "retrieval: skipped",
+      "tool: get_fee_status (error)",
+      "context: question + fee tool result",
+      "chat history excluded"
+    ],
+    "tool": "get_fee_status",
+    "tool_ok": false,
+    "chunks": [],
+    "memory_used": {},
+    "memory_write": "none",
+    "latency_ms": 0.2,
+    "input_tokens": 33,
+    "output_tokens": 28,
+    "context": {
+      "question": "What is my current fee status?",
+      "tool_result": {
+        "ok": false,
+        "error": "student_not_found",
+        "tool": "get_fee_status"
+      }
+    }
+  }
+]

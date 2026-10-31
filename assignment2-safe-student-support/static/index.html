@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Safe Student Support Agent</title>
+  <style>
+    body { font-family: "Segoe UI", sans-serif; margin: 0; background: #f3f6f9; color: #172033; }
+    header { background: #123a63; color: #fff; padding: 16px 20px; }
+    h1 { margin: 0; font-size: 22px; }
+    header p { margin: 6px 0 0; }
+    main { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 14px; padding: 14px; align-items: start; }
+    .panel { background: #fff; border: 1px solid #d7e0ea; border-radius: 10px; padding: 14px; }
+    label { display: block; font-size: 13px; margin: 8px 0; }
+    input, select, button { font: inherit; }
+    input, select { width: 100%; padding: 8px; box-sizing: border-box; }
+    #chat { height: 320px; overflow: auto; background: #f8fafc; border: 1px solid #d7e0ea; border-radius: 8px; padding: 10px; }
+    .msg { padding: 8px 10px; border-radius: 8px; margin-bottom: 8px; white-space: pre-wrap; }
+    .you { background: #e5f0fb; }
+    .agent { background: #eef6ef; }
+    .row { display: flex; gap: 8px; margin-top: 8px; }
+    .row input { flex: 1; }
+    button { background: #123a63; color: white; border: 0; border-radius: 6px; padding: 8px 12px; cursor: pointer; margin: 4px 4px 0 0; }
+    button.secondary { background: #4d6074; }
+    button.no { background: #8a3b3b; }
+    pre { background: #0f1722; color: #e6edf5; padding: 10px; border-radius: 8px; overflow: auto; max-height: 220px; font-size: 12px; }
+    .hint { color: #526070; font-size: 13px; }
+    h2 { font-size: 16px; margin: 12px 0 8px; }
+    #loginError { color: #8a3b3b; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Student Support Agent</h1>
+    <p id="who">Assignment 2. Sign in, then ask a question. Private data is checked in tool code. Programme changes wait for staff.</p>
+  </header>
+  <main>
+    <section class="panel">
+      <form id="loginBox">
+        <h2>Sign in</h2>
+        <p class="hint">Demo PIN: S101 / 1010 (Rahul Sharma), S102 / 2020 (Priya Nair).</p>
+        <label>Student id
+          <select id="loginId"></select>
+        </label>
+        <label>PIN
+          <input id="pin" type="password" autocomplete="off">
+        </label>
+        <button type="submit">Sign in</button>
+        <p id="loginError"></p>
+      </form>
+      <div id="app" hidden>
+        <label>Sample question
+          <select id="samples">
+            <option value="">Choose a demo question</option>
+            <option>What is my current fee status?</option>
+            <option>What is my scholarship status?</option>
+            <option>The payment portal failed. Can I pay on the next working day?</option>
+            <option>What is the fee status of S102?</option>
+            <option>What is Priya Nair's scholarship status?</option>
+            <option>Please change my programme to PGDM Artificial Intelligence and Data Science</option>
+            <option>Please remember that I prefer email updates.</option>
+            <option>How should you contact me?</option>
+            <option>My OTP is 482913</option>
+            <option>What is the hostel Wi-Fi password?</option>
+            <option>Please create a support request because the payment portal failed.</option>
+          </select>
+        </label>
+        <div id="chat"></div>
+        <form id="form" class="row">
+          <input id="question" type="text" placeholder="Ask about your own fees, scholarship, or policy">
+          <button type="submit">Send</button>
+        </form>
+        <button type="button" id="newSession" class="secondary">New session</button>
+        <button type="button" id="logout" class="secondary">Log out</button>
+      </div>
+      <button type="button" id="reset" class="secondary">Reset demo data</button>
+    </section>
+    <aside class="panel">
+      <h2>Staff approval</h2>
+      <p class="hint">The agent cannot approve itself. Reject means the record stays unchanged.</p>
+      <div id="approvals">Sign in to see approvals.</div>
+      <h2>Saved memory</h2>
+      <pre id="memory">{}</pre>
+      <h2>Audit log</h2>
+      <pre id="audit">[]</pre>
+      <h2>Trace</h2>
+      <pre id="trace">Send a question to see the trace.</pre>
+    </aside>
+  </main>
+  <script>
+    let token = "";
+    const chat = document.getElementById("chat");
+
+    function add(role, text) {
+      const div = document.createElement("div");
+      div.className = "msg " + role;
+      div.textContent = (role === "you" ? "Student: " : "Agent: ") + text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function authHeaders() {
+      return { "Content-Type": "application/json", "X-Session": token };
+    }
+
+    function showTrace(trace) {
+      const head = [
+        "Tool: " + (trace.tool || "none"),
+        "Permission: " + (trace.permission || "not_applicable"),
+        "Approval: " + (trace.approval_status || "not_required"),
+        "Chunks: " + ((trace.chunks || []).join(", ") || "none"),
+        "Latency ms: " + trace.latency_ms,
+        "Tokens in/out: " + trace.input_tokens + " / " + trace.output_tokens,
+        ""
+      ].join("\n");
+      document.getElementById("trace").textContent = head + JSON.stringify(trace, null, 2);
+    }
+
+    async function refreshSide() {
+      const headers = authHeaders();
+      const [me, memory, audit, approvals] = await Promise.all([
+        fetch("/api/me", { headers }).then((res) => res.json()),
+        fetch("/api/memory", { headers }).then((res) => res.json()),
+        fetch("/api/audit", { headers }).then((res) => res.json()),
+        fetch("/api/approvals", { headers }).then((res) => res.json())
+      ]);
+      document.getElementById("who").textContent =
+        "Signed in as " + me.name + " (" + me.student_id + "). Programme on record: " + me.programme;
+      document.getElementById("memory").textContent = JSON.stringify(memory, null, 2);
+      document.getElementById("audit").textContent = JSON.stringify(audit, null, 2);
+      drawApprovals(approvals);
+    }
+
+    function drawApprovals(rows) {
+      const box = document.getElementById("approvals");
+      box.textContent = "";
+      if (!rows.length) {
+        box.textContent = "No approval requests yet.";
+        return;
+      }
+      rows.forEach((row) => {
+        const p = document.createElement("p");
+        p.textContent = row.id + " · " + row.status + " · " + row.student_id + " → " + row.new_programme;
+        box.appendChild(p);
+        if (row.status === "pending") {
+          const yes = document.createElement("button");
+          yes.textContent = "Approve " + row.id;
+          yes.addEventListener("click", () => decide(row.id, "approve"));
+          const no = document.createElement("button");
+          no.className = "no";
+          no.textContent = "Reject " + row.id;
+          no.addEventListener("click", () => decide(row.id, "reject"));
+          box.appendChild(yes);
+          box.appendChild(no);
+        }
+      });
+    }
+
+    async function decide(approvalId, decision) {
+      const res = await fetch("/api/decision", {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify({ approval_id: approvalId, decision })
+      });
+      const data = await res.json();
+      add("agent", data.message || data.error || "Decision saved");
+      refreshSide();
+    }
+
+    async function loadStudents() {
+      const rows = await fetch("/api/students").then((res) => res.json());
+      const select = document.getElementById("loginId");
+      rows.forEach((row) => {
+        const option = document.createElement("option");
+        option.value = row.student_id;
+        option.textContent = row.student_id + " " + row.name;
+        select.appendChild(option);
+      });
+    }
+
+    document.getElementById("loginBox").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      document.getElementById("loginError").textContent = "";
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          student_id: document.getElementById("loginId").value,
+          pin: document.getElementById("pin").value
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        document.getElementById("loginError").textContent = data.error || "Login failed";
+        return;
+      }
+      token = data.token;
+      document.getElementById("loginBox").hidden = true;
+      document.getElementById("app").hidden = false;
+      document.getElementById("pin").value = "";
+      chat.textContent = "";
+      add("agent", "Signed in. Ask for your own record, or try another student's id to see it blocked.");
+      refreshSide();
+    });
+
+    document.getElementById("samples").addEventListener("change", (event) => {
+      if (event.target.value) document.getElementById("question").value = event.target.value;
+    });
+
+    document.getElementById("form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const question = document.getElementById("question").value.trim();
+      if (!question) return;
+      add("you", question);
+      document.getElementById("question").value = "";
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify({ question })
+      });
+      const data = await res.json();
+      add("agent", data.answer || data.error || "No answer");
+      if (data.trace) showTrace(data.trace);
+      refreshSide();
+    });
+
+    document.getElementById("newSession").addEventListener("click", () => {
+      chat.textContent = "";
+      add("agent", "New session. Saved preferences stay. Chat history was cleared.");
+    });
+
+    document.getElementById("logout").addEventListener("click", () => {
+      token = "";
+      document.getElementById("app").hidden = true;
+      document.getElementById("loginBox").hidden = false;
+      document.getElementById("who").textContent = "Signed out.";
+    });
+
+    document.getElementById("reset").addEventListener("click", async () => {
+      await fetch("/api/reset", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+      token = "";
+      chat.textContent = "";
+      document.getElementById("app").hidden = true;
+      document.getElementById("loginBox").hidden = false;
+      document.getElementById("who").textContent = "Demo data reset. Sign in again.";
+      document.getElementById("memory").textContent = "{}";
+      document.getElementById("audit").textContent = "[]";
+      document.getElementById("approvals").textContent = "No approval requests yet.";
+      document.getElementById("trace").textContent = "Demo data reset.";
+    });
+
+    loadStudents();
+  </script>
+</body>
+</html>

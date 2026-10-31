@@ -1,0 +1,24 @@
+[
+  {
+    "id": "APR-001",
+    "student_id": "S101",
+    "action": "programme_change",
+    "new_programme": "PGDM Artificial Intelligence and Data Science",
+    "current_programme": "PGDM Big Data Analytics",
+    "status": "rejected",
+    "requested_at": "2026-10-31T17:43:51",
+    "approver": "staff.admin",
+    "decided_at": "2026-10-31T17:43:51"
+  },
+  {
+    "id": "APR-002",
+    "student_id": "S101",
+    "action": "programme_change",
+    "new_programme": "PGDM Artificial Intelligence and Data Science",
+    "current_programme": "PGDM Big Data Analytics",
+    "status": "approved",
+    "requested_at": "2026-10-31T17:43:51",
+    "approver": "staff.admin",
+    "decided_at": "2026-10-31T17:43:51"
+  }
+]

@@ -1,0 +1,8 @@
+# This folder also holds unrelated files. Only the two assignments are tracked.
+*
+!.gitignore
+!README.md
+!assignment1-student-support/
+!assignment1-student-support/**
+!assignment2-safe-student-support/
+!assignment2-safe-student-support/**

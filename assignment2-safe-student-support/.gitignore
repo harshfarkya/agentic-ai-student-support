@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+data/memory.json
+data/traces.jsonl
+data/support_requests.json
+data/audit.json
+data/approvals.json
